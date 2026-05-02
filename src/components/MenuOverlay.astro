@@ -1,0 +1,89 @@
+---
+import { navigation } from '../data/navigation';
+
+const baseUrl = import.meta.env.BASE_URL;
+const currentPath = Astro.url.pathname;
+
+function withBase(href: string) {
+  if (href === '/') return baseUrl;
+  return `${baseUrl.replace(/\/$/, '')}${href}`;
+}
+
+function isActive(href: string) {
+  const target = withBase(href);
+  if (href === '/') return currentPath === target || currentPath === baseUrl;
+  return currentPath === target;
+}
+---
+<div
+  id="menu-overlay"
+  class="fixed inset-0 z-[60] bg-[var(--color-bg)] hidden"
+  role="dialog"
+  aria-modal="true"
+  aria-label="Site menu"
+>
+  <div class="h-14 px-6 lg:px-10 flex items-center justify-end border-b border-[var(--color-border)]">
+    <button
+      id="menu-close"
+      type="button"
+      class="font-display text-base tracking-tight hover:opacity-60 transition-opacity cursor-pointer"
+      aria-label="Close menu"
+    >
+      Close
+    </button>
+  </div>
+
+  <nav class="px-6 lg:px-10 py-10 lg:py-16">
+    <ul class="text-right space-y-2 lg:space-y-3 max-w-3xl ml-auto">
+      {navigation.map((item) => (
+        <li>
+          <a
+            href={withBase(item.href)}
+            class:list={[
+              'font-display font-normal tracking-tight inline-block py-1',
+              'text-2xl md:text-3xl lg:text-4xl',
+              'hover:opacity-60 transition-opacity',
+              isActive(item.href)
+                ? 'text-[var(--color-text)]'
+                : 'text-[var(--color-text)]',
+            ]}
+          >
+            {item.label}
+          </a>
+        </li>
+      ))}
+    </ul>
+  </nav>
+</div>
+
+<script>
+  const overlay = document.getElementById('menu-overlay');
+  const closeBtn = document.getElementById('menu-close');
+
+  const open = () => {
+    overlay?.classList.remove('hidden');
+    document.body.style.overflow = 'hidden';
+  };
+
+  const close = () => {
+    overlay?.classList.add('hidden');
+    document.body.style.overflow = '';
+  };
+
+  document.addEventListener('click', (e) => {
+    const target = e.target as HTMLElement | null;
+    const trigger = target?.closest('[data-menu-open]');
+    if (trigger) {
+      e.preventDefault();
+      open();
+    }
+  });
+
+  closeBtn?.addEventListener('click', close);
+
+  document.addEventListener('keydown', (e) => {
+    if (e.key === 'Escape' && overlay && !overlay.classList.contains('hidden')) {
+      close();
+    }
+  });
+</script>

@@ -1,0 +1,40 @@
+---
+import SidebarLayout from '../layouts/SidebarLayout.astro';
+import { profile } from '../data/profile';
+---
+<SidebarLayout title="About">
+  <section class="mb-16">
+    <p class="section-label mb-4">About</p>
+    <div class="space-y-5 text-[var(--color-text-secondary)] leading-relaxed">
+      {profile.bio.map((paragraph) => (
+        <p>{paragraph}</p>
+      ))}
+    </div>
+  </section>
+
+  <section class="mb-16">
+    <p class="section-label mb-5">Education</p>
+    <ul class="space-y-5">
+      {profile.education.map((edu) => (
+        <li class="border-l-2 border-[var(--color-border)] pl-5">
+          <p class="font-display font-bold text-lg tracking-tight leading-tight mb-1">{edu.degree}</p>
+          <p class="text-sm text-[var(--color-text-secondary)]">
+            {edu.institution} · {edu.location} · {edu.year}
+          </p>
+          {edu.note && (
+            <p class="text-xs text-[var(--color-text-muted)] mt-1 italic">{edu.note}</p>
+          )}
+        </li>
+      ))}
+    </ul>
+  </section>
+
+  <section>
+    <p class="section-label mb-4">Currently</p>
+    <p class="text-[var(--color-text-secondary)] leading-relaxed">
+      Working on the decoupling of partnership, reproduction, and marriage in
+      contemporary South Korea, and on intergenerational support structures
+      among older Korean adults. Preparing doctoral applications.
+    </p>
+  </section>
+</SidebarLayout>

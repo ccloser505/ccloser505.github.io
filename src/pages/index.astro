@@ -1,40 +1,80 @@
 ---
-import SidebarLayout from '../layouts/SidebarLayout.astro';
+import BaseLayout from '../layouts/BaseLayout.astro';
+import Nav from '../components/Nav.astro';
+import MenuOverlay from '../components/MenuOverlay.astro';
 import { profile } from '../data/profile';
+
+const baseUrl = import.meta.env.BASE_URL;
+
+const tiles = [
+  { label: 'About', href: 'about/' },
+  { label: 'Research & Publications', href: 'research/' },
+  { label: 'Presentations', href: 'presentations/' },
+  { label: 'Curriculum Vitae', href: 'cv/' },
+];
+
+const withBase = (href: string) => `${baseUrl}${href}`;
 ---
-<SidebarLayout title="About">
-  <section class="mb-16">
-    <p class="section-label mb-4">About</p>
-    <div class="space-y-5 text-[var(--color-text-secondary)] leading-relaxed">
-      {profile.bio.map((paragraph) => (
-        <p>{paragraph}</p>
+<BaseLayout>
+  <Nav />
+
+  <main class="pt-14">
+    <!-- Hero -->
+    <section class="px-6 lg:px-10 py-20 lg:py-28 text-center">
+      <h1 class="font-display font-bold tracking-tight text-2xl sm:text-3xl md:text-4xl lg:text-5xl mb-10 lg:mb-14 text-[var(--color-text)]">
+        <span class="whitespace-nowrap">{profile.name.en}</span>
+        <span class="text-[var(--color-text-muted)] mx-2 lg:mx-3 font-light">|</span>
+        <span class="whitespace-nowrap">{profile.name.hanja}</span>
+        <span class="text-[var(--color-text-muted)] mx-2 lg:mx-3 font-light">|</span>
+        <span class="whitespace-nowrap">{profile.name.ko}</span>
+      </h1>
+      <div class="space-y-3 text-[var(--color-text-secondary)] text-sm lg:text-base">
+        <p>{profile.tagline}</p>
+        <p>{profile.title}, {profile.affiliation}</p>
+        <p>{profile.location}</p>
+      </div>
+    </section>
+
+    <!-- Tile grid: 4 color blocks. Image-less for now; intentional palette + bold labels. -->
+    <section
+      class="grid grid-cols-2 lg:grid-cols-4 gap-px bg-[var(--color-border)] border-y border-[var(--color-border)]"
+      aria-label="Site sections"
+    >
+      {tiles.map((tile) => (
+        <a
+          href={withBase(tile.href)}
+          class="group aspect-[3/4] bg-[var(--color-bg-tile)] hover:bg-[var(--color-bg-tile-hover)] transition-colors duration-300 flex items-center justify-center px-4 lg:px-6"
+        >
+          <span
+            class="font-display font-bold text-base sm:text-lg lg:text-2xl tracking-tight text-center leading-tight underline decoration-1 underline-offset-[6px] group-hover:underline-offset-[8px] transition-[text-underline-offset]"
+          >
+            {tile.label}
+          </span>
+        </a>
       ))}
+    </section>
+
+    <!-- Bottom wide block: Blog teaser, mirroring Min Lee's wide hero -->
+    <section
+      class="grid grid-cols-1 border-b border-[var(--color-border)]"
+      aria-label="Blog"
+    >
+      <a
+        href={withBase('blog/')}
+        class="group aspect-[3/1] lg:aspect-[4/1] bg-[var(--color-bg-sidebar)] hover:bg-[var(--color-bg-tile-hover)] transition-colors duration-300 flex items-center justify-center px-6"
+      >
+        <span class="font-display font-bold text-xl sm:text-2xl lg:text-3xl tracking-tight underline decoration-1 underline-offset-[6px] group-hover:underline-offset-[8px] transition-[text-underline-offset]">
+          Blog
+        </span>
+      </a>
+    </section>
+
+    <!-- Footer-ish bottom strip -->
+    <div class="px-6 lg:px-10 py-6 text-xs text-[var(--color-text-muted)] flex items-center justify-between">
+      <span>© {new Date().getFullYear()} {profile.name.en}</span>
+      <a href={profile.links.email} class="hover:text-[var(--color-text)]">{profile.email}</a>
     </div>
-  </section>
+  </main>
 
-  <section class="mb-16">
-    <p class="section-label mb-5">Education</p>
-    <ul class="space-y-5">
-      {profile.education.map((edu) => (
-        <li class="border-l-2 border-[var(--color-border)] pl-5">
-          <p class="font-serif text-lg leading-tight mb-1">{edu.degree}</p>
-          <p class="text-sm text-[var(--color-text-secondary)]">
-            {edu.institution} · {edu.location} · {edu.year}
-          </p>
-          {edu.note && (
-            <p class="text-xs text-[var(--color-text-muted)] mt-1 italic">{edu.note}</p>
-          )}
-        </li>
-      ))}
-    </ul>
-  </section>
-
-  <section>
-    <p class="section-label mb-4">Currently</p>
-    <p class="text-[var(--color-text-secondary)] leading-relaxed">
-      Working on the decoupling of partnership, reproduction, and marriage in
-      contemporary South Korea, and on intergenerational support structures
-      among older Korean adults. Preparing doctoral applications.
-    </p>
-  </section>
-</SidebarLayout>
+  <MenuOverlay />
+</BaseLayout>

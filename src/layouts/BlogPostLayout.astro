@@ -1,6 +1,7 @@
 ---
 import BaseLayout from './BaseLayout.astro';
 import Nav from '../components/Nav.astro';
+import MenuOverlay from '../components/MenuOverlay.astro';
 
 interface Props {
   title: string;
@@ -29,7 +30,7 @@ const blogIndexUrl = `${baseUrl.replace(/\/$/, '')}/blog/`;
     </a>
 
     <header class="mb-12 pb-8 border-b border-[var(--color-border)]">
-      <h1 class="font-serif text-3xl lg:text-4xl leading-tight mb-5">{title}</h1>
+      <h1 class="font-display font-bold text-3xl lg:text-4xl leading-tight mb-5">{title}</h1>
       <div class="flex flex-wrap items-center gap-x-3 text-xs text-[var(--color-text-muted)]">
         <time datetime={pubDate.toISOString()}>{fmt(pubDate)}</time>
         {updatedDate && (
@@ -51,4 +52,5 @@ const blogIndexUrl = `${baseUrl.replace(/\/$/, '')}/blog/`;
       <slot />
     </div>
   </article>
+  <MenuOverlay />
 </BaseLayout>

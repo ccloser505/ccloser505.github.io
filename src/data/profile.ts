@@ -1,6 +1,7 @@
 export const profile = {
   name: {
     en: 'Hwayeon Kim',
+    hanja: '金花淵',
     ko: '김화연',
   },
   title: 'MA in Sociology',

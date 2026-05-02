@@ -1,91 +1,26 @@
 ---
-import { navigation } from '../data/navigation';
 import { profile } from '../data/profile';
 
 const baseUrl = import.meta.env.BASE_URL;
-const currentPath = Astro.url.pathname;
-
-function withBase(href: string) {
-  if (href === '/') return baseUrl;
-  return `${baseUrl.replace(/\/$/, '')}${href}`;
-}
-
-function isActive(href: string) {
-  const target = withBase(href);
-  if (href === '/') return currentPath === target || currentPath === baseUrl;
-  return currentPath.startsWith(target);
-}
 ---
 <nav class="fixed top-0 left-0 right-0 z-50 bg-[var(--color-bg)]/90 backdrop-blur-sm border-b border-[var(--color-border)]">
   <div class="px-6 lg:px-10 h-14 flex items-center justify-between">
     <a
       href={baseUrl}
-      class="font-serif text-base tracking-tight hover:opacity-70 transition-opacity"
+      class="font-display text-base tracking-tight hover:opacity-60 transition-opacity"
       aria-label="Home"
     >
       {profile.name.en}
     </a>
 
     <button
-      id="nav-toggle"
-      class="md:hidden p-2 -mr-2 text-[var(--color-text)]"
-      aria-label="Toggle menu"
-      aria-expanded="false"
+      type="button"
+      data-menu-open
+      class="font-display text-base tracking-tight hover:opacity-60 transition-opacity cursor-pointer"
+      aria-label="Open menu"
+      aria-haspopup="dialog"
     >
-      <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M4 6h16M4 12h16M4 18h16" />
-      </svg>
+      Menu
     </button>
-
-    <ul class="hidden md:flex items-center gap-8 text-sm tracking-wide">
-      {navigation.map((item) => (
-        <li>
-          <a
-            href={withBase(item.href)}
-            class:list={[
-              'transition-colors duration-200',
-              isActive(item.href)
-                ? 'text-[var(--color-text)] font-medium'
-                : 'text-[var(--color-text-muted)] hover:text-[var(--color-text)]',
-            ]}
-          >
-            {item.label}
-          </a>
-        </li>
-      ))}
-    </ul>
-  </div>
-
-  <div
-    id="nav-mobile"
-    class="hidden md:hidden border-t border-[var(--color-border)] bg-[var(--color-bg)]"
-  >
-    <ul class="px-6 py-4 space-y-3 text-sm">
-      {navigation.map((item) => (
-        <li>
-          <a
-            href={withBase(item.href)}
-            class:list={[
-              'block py-1 transition-colors',
-              isActive(item.href)
-                ? 'text-[var(--color-text)] font-medium'
-                : 'text-[var(--color-text-muted)]',
-            ]}
-          >
-            {item.label}
-          </a>
-        </li>
-      ))}
-    </ul>
   </div>
 </nav>
-
-<script>
-  const toggle = document.getElementById('nav-toggle');
-  const menu = document.getElementById('nav-mobile');
-  toggle?.addEventListener('click', () => {
-    const expanded = toggle.getAttribute('aria-expanded') === 'true';
-    toggle.setAttribute('aria-expanded', String(!expanded));
-    menu?.classList.toggle('hidden');
-  });
-</script>
