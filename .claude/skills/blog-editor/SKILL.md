@@ -239,6 +239,7 @@ GitHub will 301-redirect `ccloser505.github.io` to the new domain automatically 
 - **Add Tailwind config file** (`tailwind.config.js`). v4 uses CSS-first config. Adding a JS config will cause silent style mismatches.
 - **Use `@astrojs/tailwind` integration**. v3-only. We use `@tailwindcss/vite` instead.
 - **Inline content data into `.astro` files**. Breaks the data → presentation separation; future edits will scatter across many files.
+- **Auto-populate `src/content/blog/` from `publications.ts` / `presentations.ts` / any CV-derived source**. The blog folder is the user's authored writing space, not a derived feed. Generating posts from existing structured data confuses ownership and creates content the user didn't write. If a feature needs activity-log behavior, add it as a separate data file or pull from publications/presentations directly — don't materialize it as fake blog posts.
 - **Skip blog post frontmatter or use the wrong shape**. Build will fail. Refer to schema in `src/content.config.ts`.
 - **Make the sidebar `lg:fixed` again with internal scroll**. We already debugged this — content past viewport becomes invisible. `lg:sticky` is intentional.
 - **Add `<meta>` tags inside individual pages**. `BaseLayout` already handles SEO; duplication breaks canonical/OG semantics.
