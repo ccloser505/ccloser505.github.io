@@ -1,80 +1,69 @@
 ---
-import BaseLayout from '../layouts/BaseLayout.astro';
-import Nav from '../components/Nav.astro';
-import MenuOverlay from '../components/MenuOverlay.astro';
+import SidebarLayout from '../layouts/SidebarLayout.astro';
 import { profile } from '../data/profile';
+import { getCollection } from 'astro:content';
 
 const baseUrl = import.meta.env.BASE_URL;
 
-const tiles = [
-  { label: 'About', href: 'about/' },
-  { label: 'Research & Publications', href: 'research/' },
-  { label: 'Presentations', href: 'presentations/' },
-  { label: 'Curriculum Vitae', href: 'cv/' },
-];
+const posts = (await getCollection('blog', ({ data }) => !data.draft))
+  .sort((a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf());
 
-const withBase = (href: string) => `${baseUrl}${href}`;
+// Latest N posts populate Current Work; the rest live in /blog/
+const recentPosts = posts.slice(0, 7);
+
+const fmt = (d: Date) =>
+  d.toLocaleDateString('en-US', { year: 'numeric', month: 'long' });
 ---
-<BaseLayout>
-  <Nav />
-
-  <main class="pt-14">
-    <!-- Hero -->
-    <section class="px-6 lg:px-10 py-20 lg:py-28 text-center">
-      <h1 class="font-display font-bold tracking-tight text-2xl sm:text-3xl md:text-4xl lg:text-5xl mb-10 lg:mb-14 text-[var(--color-text)]">
-        <span class="whitespace-nowrap">{profile.name.en}</span>
-        <span class="text-[var(--color-text-muted)] mx-2 lg:mx-3 font-light">|</span>
-        <span class="whitespace-nowrap">{profile.name.hanja}</span>
-        <span class="text-[var(--color-text-muted)] mx-2 lg:mx-3 font-light">|</span>
-        <span class="whitespace-nowrap">{profile.name.ko}</span>
-      </h1>
-      <div class="space-y-3 text-[var(--color-text-secondary)] text-sm lg:text-base">
-        <p>{profile.tagline}</p>
-        <p>{profile.title}, {profile.affiliation}</p>
-        <p>{profile.location}</p>
-      </div>
-    </section>
-
-    <!-- Tile grid: 4 color blocks. Image-less for now; intentional palette + bold labels. -->
-    <section
-      class="grid grid-cols-2 lg:grid-cols-4 gap-px bg-[var(--color-border)] border-y border-[var(--color-border)]"
-      aria-label="Site sections"
-    >
-      {tiles.map((tile) => (
-        <a
-          href={withBase(tile.href)}
-          class="group aspect-[3/4] bg-[var(--color-bg-tile)] hover:bg-[var(--color-bg-tile-hover)] transition-colors duration-300 flex items-center justify-center px-4 lg:px-6"
-        >
-          <span
-            class="font-display font-bold text-base sm:text-lg lg:text-2xl tracking-tight text-center leading-tight underline decoration-1 underline-offset-[6px] group-hover:underline-offset-[8px] transition-[text-underline-offset]"
-          >
-            {tile.label}
-          </span>
-        </a>
+<SidebarLayout>
+  <section class="mb-16">
+    <p class="section-label mb-4">About</p>
+    <div class="space-y-5 text-[var(--color-text-secondary)] leading-relaxed">
+      {profile.bio.map((paragraph) => (
+        <p>{paragraph}</p>
       ))}
-    </section>
-
-    <!-- Bottom wide block: Blog teaser, mirroring Min Lee's wide hero -->
-    <section
-      class="grid grid-cols-1 border-b border-[var(--color-border)]"
-      aria-label="Blog"
-    >
-      <a
-        href={withBase('blog/')}
-        class="group aspect-[3/1] lg:aspect-[4/1] bg-[var(--color-bg-sidebar)] hover:bg-[var(--color-bg-tile-hover)] transition-colors duration-300 flex items-center justify-center px-6"
-      >
-        <span class="font-display font-bold text-xl sm:text-2xl lg:text-3xl tracking-tight underline decoration-1 underline-offset-[6px] group-hover:underline-offset-[8px] transition-[text-underline-offset]">
-          Blog
-        </span>
-      </a>
-    </section>
-
-    <!-- Footer-ish bottom strip -->
-    <div class="px-6 lg:px-10 py-6 text-xs text-[var(--color-text-muted)] flex items-center justify-between">
-      <span>© {new Date().getFullYear()} {profile.name.en}</span>
-      <a href={profile.links.email} class="hover:text-[var(--color-text)]">{profile.email}</a>
     </div>
-  </main>
+  </section>
 
-  <MenuOverlay />
-</BaseLayout>
+  <section>
+    <p class="section-label mb-5">Current Work</p>
+    {recentPosts.length === 0 ? (
+      <p class="text-[var(--color-text-muted)] italic">Nothing posted yet.</p>
+    ) : (
+      <ul class="space-y-6">
+        {recentPosts.map((post) => (
+          <li class="border-l-2 border-[var(--color-border)] pl-5">
+            <p class="text-xs text-[var(--color-text-muted)] tracking-wide mb-1.5 uppercase">
+              <time datetime={post.data.pubDate.toISOString()}>{fmt(post.data.pubDate)}</time>
+              {post.data.tags.length > 0 && (
+                <span class="ml-2">· {post.data.tags[0]}</span>
+              )}
+            </p>
+            <p class="font-display font-semibold text-base tracking-tight leading-snug">
+              <a
+                href={`${baseUrl.replace(/\/$/, '')}/blog/${post.id}/`}
+                class="hover:opacity-70 transition-opacity"
+              >
+                {post.data.title}
+              </a>
+            </p>
+            {post.data.description && (
+              <p class="text-sm text-[var(--color-text-secondary)] mt-1.5 leading-relaxed">
+                {post.data.description}
+              </p>
+            )}
+          </li>
+        ))}
+      </ul>
+    )}
+    {posts.length > recentPosts.length && (
+      <p class="mt-8 text-sm">
+        <a
+          href={`${baseUrl}blog/`}
+          class="text-[var(--color-text-secondary)] hover:text-[var(--color-text)] underline decoration-[var(--color-border-strong)] underline-offset-4"
+        >
+          See all posts →
+        </a>
+      </p>
+    )}
+  </section>
+</SidebarLayout>
