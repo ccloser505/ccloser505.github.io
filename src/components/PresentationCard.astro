@@ -1,0 +1,22 @@
+---
+import type { Presentation } from '../data/presentations';
+
+interface Props {
+  presentation: Presentation;
+}
+
+const { presentation } = Astro.props;
+---
+<article class="py-5 border-b border-[var(--color-border)] last:border-b-0">
+  <p class="text-xs text-[var(--color-text-muted)] mb-2 tracking-wide">
+    {presentation.date}
+    {presentation.note && (
+      <span> · {presentation.note}</span>
+    )}
+  </p>
+  <h3 class="font-serif text-lg leading-snug mb-2">{presentation.title}</h3>
+  <p class="text-sm text-[var(--color-text-secondary)]">
+    <span class="italic">{presentation.event}</span>
+    <span class="text-[var(--color-text-muted)]"> · {presentation.location}</span>
+  </p>
+</article>

@@ -1,0 +1,51 @@
+---
+import SidebarLayout from '../../layouts/SidebarLayout.astro';
+import { getCollection } from 'astro:content';
+
+const baseUrl = import.meta.env.BASE_URL;
+
+const posts = (await getCollection('blog', ({ data }) => !data.draft)).sort(
+  (a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf()
+);
+
+const fmt = (d: Date) =>
+  d.toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' });
+---
+<SidebarLayout title="Blog">
+  <header class="mb-12">
+    <h1 class="font-serif text-3xl mb-3">Blog</h1>
+    <p class="text-[var(--color-text-secondary)] text-sm leading-relaxed">
+      Notes on research, reading, and the academic life.
+    </p>
+  </header>
+
+  {posts.length === 0 ? (
+    <p class="text-[var(--color-text-muted)] italic">
+      Posts coming soon.
+    </p>
+  ) : (
+    <ul class="space-y-10">
+      {posts.map((post) => (
+        <li class="group">
+          <a href={`${baseUrl.replace(/\/$/, '')}/blog/${post.id}/`} class="block">
+            <p class="text-xs text-[var(--color-text-muted)] mb-2 tracking-wide">
+              <time datetime={post.data.pubDate.toISOString()}>{fmt(post.data.pubDate)}</time>
+              {post.data.tags.length > 0 && (
+                <>
+                  <span aria-hidden="true"> · </span>
+                  <span>{post.data.tags.join(', ')}</span>
+                </>
+              )}
+            </p>
+            <h2 class="font-serif text-xl leading-tight mb-2 group-hover:opacity-70 transition-opacity">
+              {post.data.title}
+            </h2>
+            <p class="text-sm text-[var(--color-text-secondary)] leading-relaxed">
+              {post.data.description}
+            </p>
+          </a>
+        </li>
+      ))}
+    </ul>
+  )}
+</SidebarLayout>

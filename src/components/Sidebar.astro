@@ -1,0 +1,70 @@
+---
+import { profile } from '../data/profile';
+
+const baseUrl = import.meta.env.BASE_URL;
+const profileImageUrl = `${baseUrl}${profile.profileImage}`;
+const cvUrl = `${baseUrl}${profile.links.cv}`;
+---
+<aside
+  class="lg:sticky lg:top-14 lg:self-start lg:w-[320px] lg:shrink-0
+         lg:border-r lg:border-[var(--color-border)]
+         px-8 lg:px-10 py-10 lg:py-14"
+>
+  <div class="mb-8 max-w-[260px] mx-auto lg:mx-0">
+    <img
+      src={profileImageUrl}
+      alt={`Portrait illustration of ${profile.name.en}`}
+      class="w-full h-auto block"
+      width="260"
+      loading="eager"
+    />
+  </div>
+
+  <header class="mb-8">
+    <h1 class="font-serif text-2xl leading-tight mb-1">{profile.name.en}</h1>
+    <p class="font-serif text-base text-[var(--color-text-secondary)] mb-3">{profile.name.ko}</p>
+    <p class="text-sm text-[var(--color-text-secondary)] leading-snug">
+      {profile.title}<br />
+      {profile.affiliation}<br />
+      <span class="text-[var(--color-text-muted)]">{profile.location}</span>
+    </p>
+  </header>
+
+  <section class="mb-8">
+    <p class="section-label mb-3">Research</p>
+    <ul class="text-sm text-[var(--color-text-secondary)] space-y-1.5">
+      {profile.researchInterests.map((interest) => (
+        <li>{interest}</li>
+      ))}
+    </ul>
+  </section>
+
+  <section class="mb-8">
+    <p class="section-label mb-3">Methods</p>
+    <p class="text-sm text-[var(--color-text-secondary)]">
+      {profile.skills.join(' · ')}
+    </p>
+  </section>
+
+  <section>
+    <p class="section-label mb-3">Contact</p>
+    <ul class="text-sm space-y-1.5">
+      <li>
+        <a
+          href={profile.links.email}
+          class="text-[var(--color-text-secondary)] hover:text-[var(--color-text)] underline decoration-[var(--color-border-strong)] underline-offset-4"
+        >
+          {profile.email}
+        </a>
+      </li>
+      <li>
+        <a
+          href={cvUrl}
+          class="text-[var(--color-text-secondary)] hover:text-[var(--color-text)] underline decoration-[var(--color-border-strong)] underline-offset-4"
+        >
+          Curriculum Vitae (PDF)
+        </a>
+      </li>
+    </ul>
+  </section>
+</aside>

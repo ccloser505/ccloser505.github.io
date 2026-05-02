@@ -1,0 +1,31 @@
+---
+import SidebarLayout from '../layouts/SidebarLayout.astro';
+import PresentationCard from '../components/PresentationCard.astro';
+import { presentationsByType } from '../data/presentations';
+---
+<SidebarLayout title="Presentations">
+  <header class="mb-12">
+    <h1 class="font-serif text-3xl mb-3">Presentations</h1>
+    <p class="text-[var(--color-text-secondary)] text-sm leading-relaxed">
+      Invited talks, seminars, and conference presentations.
+    </p>
+  </header>
+
+  <section class="mb-14">
+    <p class="section-label mb-2">Invited</p>
+    <div>
+      {presentationsByType['invited'].map((p) => (
+        <PresentationCard presentation={p} />
+      ))}
+    </div>
+  </section>
+
+  <section>
+    <p class="section-label mb-2">Conference</p>
+    <div>
+      {presentationsByType['conference'].map((p) => (
+        <PresentationCard presentation={p} />
+      ))}
+    </div>
+  </section>
+</SidebarLayout>

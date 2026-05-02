@@ -1,0 +1,35 @@
+---
+import type { Publication } from '../data/publications';
+
+interface Props {
+  publication: Publication;
+}
+
+const { publication } = Astro.props;
+---
+<article class="py-5 border-b border-[var(--color-border)] last:border-b-0">
+  <p class="text-xs text-[var(--color-text-muted)] mb-2 tracking-wide">
+    {publication.authors} · {publication.year}
+    {publication.language && (
+      <span> · in {publication.language}</span>
+    )}
+  </p>
+  <h3 class="font-serif text-lg leading-snug mb-2">
+    {publication.url ? (
+      <a
+        href={publication.url}
+        class="hover:opacity-70 transition-opacity"
+        target="_blank"
+        rel="noopener noreferrer"
+      >
+        {publication.title}
+      </a>
+    ) : (
+      publication.title
+    )}
+  </h3>
+  <p class="text-sm text-[var(--color-text-secondary)] italic">{publication.venue}</p>
+  {publication.note && (
+    <p class="text-xs text-[var(--color-text-muted)] mt-2">{publication.note}</p>
+  )}
+</article>
