@@ -20,7 +20,7 @@ function isActive(href: string) {
   <div class="px-6 lg:px-10 h-14 flex items-center gap-5 lg:gap-8 overflow-x-auto">
     <a
       href={baseUrl}
-      class="font-display font-bold text-base tracking-tight hover:opacity-60 transition-opacity whitespace-nowrap shrink-0"
+      class="font-display font-extrabold text-base tracking-tight hover:opacity-60 transition-opacity whitespace-nowrap shrink-0"
       aria-label="Home"
     >
       {profile.name.en}
@@ -31,9 +31,9 @@ function isActive(href: string) {
           <a
             href={withBase(item.href)}
             class:list={[
-              'font-display transition-colors duration-200 whitespace-nowrap',
+              'font-display font-extrabold transition-colors duration-200 whitespace-nowrap',
               isActive(item.href)
-                ? 'text-[var(--color-text)] font-medium'
+                ? 'text-[var(--color-text)]'
                 : 'text-[var(--color-text-muted)] hover:text-[var(--color-text)]',
             ]}
           >
