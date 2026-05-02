@@ -24,6 +24,7 @@ pnpm-debug.log*
 .idea/
 
 # claude code / oh-my-claudecode workspace state
-.claude/
+.claude/*
+!.claude/skills/
 .omc/
 .cwf/
