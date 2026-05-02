@@ -21,9 +21,11 @@ const cvUrl = `${baseUrl}${profile.links.cv}`;
   </div>
 
   <header class="mb-8">
-    <h1 class="font-display font-bold text-2xl tracking-tight leading-tight mb-2">{profile.name.en}</h1>
-    <p class="text-sm text-[var(--color-text-muted)] mb-4 tracking-wide">
-      {profile.name.hanja}&nbsp;&nbsp;{profile.name.ko}
+    <h1 class="font-display font-bold text-2xl tracking-tight leading-tight mb-1">
+      {profile.name.en}
+    </h1>
+    <p class="font-display font-medium text-base tracking-tight text-[var(--color-text)] mb-4">
+      {profile.name.hanja}
     </p>
     <p class="text-sm text-[var(--color-text-secondary)] leading-snug">
       {profile.title}<br />

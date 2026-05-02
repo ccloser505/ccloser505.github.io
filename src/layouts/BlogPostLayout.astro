@@ -1,7 +1,6 @@
 ---
 import BaseLayout from './BaseLayout.astro';
 import Nav from '../components/Nav.astro';
-import MenuOverlay from '../components/MenuOverlay.astro';
 
 interface Props {
   title: string;
@@ -52,5 +51,4 @@ const blogIndexUrl = `${baseUrl.replace(/\/$/, '')}/blog/`;
       <slot />
     </div>
   </article>
-  <MenuOverlay />
 </BaseLayout>

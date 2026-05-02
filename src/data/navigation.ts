@@ -3,9 +3,8 @@ export interface NavItem {
   href: string;
 }
 
-// Order matters — this is the order shown in the menu overlay.
+// Brand link in Nav already serves as Home, so it's omitted here.
 export const navigation: NavItem[] = [
-  { label: 'Home', href: '/' },
   { label: 'Research', href: '/research/' },
   { label: 'Presentations', href: '/presentations/' },
   { label: 'Blog', href: '/blog/' },

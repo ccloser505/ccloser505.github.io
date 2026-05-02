@@ -1,26 +1,46 @@
 ---
+import { navigation } from '../data/navigation';
 import { profile } from '../data/profile';
 
 const baseUrl = import.meta.env.BASE_URL;
+const currentPath = Astro.url.pathname;
+
+function withBase(href: string) {
+  if (href === '/') return baseUrl;
+  return `${baseUrl.replace(/\/$/, '')}${href}`;
+}
+
+function isActive(href: string) {
+  const target = withBase(href);
+  if (href === '/') return currentPath === target || currentPath === baseUrl;
+  return currentPath.startsWith(target);
+}
 ---
 <nav class="fixed top-0 left-0 right-0 z-50 bg-[var(--color-bg)]/90 backdrop-blur-sm border-b border-[var(--color-border)]">
-  <div class="px-6 lg:px-10 h-14 flex items-center justify-between">
+  <div class="px-6 lg:px-10 h-14 flex items-center gap-5 lg:gap-8 overflow-x-auto">
     <a
       href={baseUrl}
-      class="font-display text-base tracking-tight hover:opacity-60 transition-opacity"
+      class="font-display font-bold text-base tracking-tight hover:opacity-60 transition-opacity whitespace-nowrap shrink-0"
       aria-label="Home"
     >
       {profile.name.en}
     </a>
-
-    <button
-      type="button"
-      data-menu-open
-      class="font-display text-base tracking-tight hover:opacity-60 transition-opacity cursor-pointer"
-      aria-label="Open menu"
-      aria-haspopup="dialog"
-    >
-      Menu
-    </button>
+    <ul class="flex items-center gap-4 lg:gap-6 text-sm tracking-wide">
+      {navigation.map((item) => (
+        <li class="shrink-0">
+          <a
+            href={withBase(item.href)}
+            class:list={[
+              'font-display transition-colors duration-200 whitespace-nowrap',
+              isActive(item.href)
+                ? 'text-[var(--color-text)] font-medium'
+                : 'text-[var(--color-text-muted)] hover:text-[var(--color-text)]',
+            ]}
+          >
+            {item.label}
+          </a>
+        </li>
+      ))}
+    </ul>
   </div>
 </nav>
