@@ -1,21 +1,9 @@
 ---
 import SidebarLayout from '../layouts/SidebarLayout.astro';
 import { profile } from '../data/profile';
-import { getCollection } from 'astro:content';
-
-const baseUrl = import.meta.env.BASE_URL;
-
-const posts = (await getCollection('blog', ({ data }) => !data.draft))
-  .sort((a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf());
-
-// Latest N posts on homepage; rest live in /blog/
-const recentPosts = posts.slice(0, 7);
-
-const fmt = (d: Date) =>
-  d.toLocaleDateString('en-US', { year: 'numeric', month: 'long' });
 ---
 <SidebarLayout>
-  <section class="mb-16">
+  <section>
     <p class="section-label mb-4">About</p>
     <div class="space-y-5 text-[var(--color-text-secondary)] leading-relaxed">
       {profile.bio.map((paragraph) => (
@@ -23,44 +11,4 @@ const fmt = (d: Date) =>
       ))}
     </div>
   </section>
-
-  {recentPosts.length > 0 && (
-    <section class="pt-2 border-t border-[var(--color-border)]">
-      <ul class="space-y-6 mt-10">
-        {recentPosts.map((post) => (
-          <li class="border-l-2 border-[var(--color-border)] pl-5">
-            <p class="text-xs text-[var(--color-text-muted)] tracking-wide mb-1.5 uppercase">
-              <time datetime={post.data.pubDate.toISOString()}>{fmt(post.data.pubDate)}</time>
-              {post.data.tags.length > 0 && (
-                <span class="ml-2">· {post.data.tags[0]}</span>
-              )}
-            </p>
-            <p class="font-display font-semibold text-base tracking-tight leading-snug">
-              <a
-                href={`${baseUrl.replace(/\/$/, '')}/blog/${post.id}/`}
-                class="hover:opacity-70 transition-opacity"
-              >
-                {post.data.title}
-              </a>
-            </p>
-            {post.data.description && (
-              <p class="text-sm text-[var(--color-text-secondary)] mt-1.5 leading-relaxed">
-                {post.data.description}
-              </p>
-            )}
-          </li>
-        ))}
-      </ul>
-      {posts.length > recentPosts.length && (
-        <p class="mt-8 text-sm">
-          <a
-            href={`${baseUrl}blog/`}
-            class="text-[var(--color-text-secondary)] hover:text-[var(--color-text)] underline decoration-[var(--color-border-strong)] underline-offset-4"
-          >
-            See all posts →
-          </a>
-        </p>
-      )}
-    </section>
-  )}
 </SidebarLayout>
