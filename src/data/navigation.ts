@@ -3,10 +3,11 @@ export interface NavItem {
   href: string;
 }
 
-// Brand link in Nav already serves as Home, so it's omitted here.
+// Anchor links — single-page layout. Brand link (Nav.astro) scrolls to top.
 export const navigation: NavItem[] = [
-  { label: 'Research', href: '/research/' },
-  { label: 'Presentations', href: '/presentations/' },
-  { label: 'Blog', href: '/blog/' },
-  { label: 'CV', href: '/cv/' },
+  { label: 'About', href: '#about' },
+  { label: 'Research', href: '#research' },
+  { label: 'Presentations', href: '#presentations' },
+  { label: 'Blog', href: '#blog' },
+  { label: 'CV', href: '#cv' },
 ];

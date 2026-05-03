@@ -1,14 +1,149 @@
 ---
 import SidebarLayout from '../layouts/SidebarLayout.astro';
+import PublicationCard from '../components/PublicationCard.astro';
+import PresentationCard from '../components/PresentationCard.astro';
 import { profile } from '../data/profile';
+import { publicationsByType } from '../data/publications';
+import { presentationsByType } from '../data/presentations';
+import { getCollection } from 'astro:content';
+
+const baseUrl = import.meta.env.BASE_URL;
+const cvUrl = `${baseUrl}${profile.links.cv}`;
+
+const posts = (await getCollection('blog', ({ data }) => !data.draft))
+  .sort((a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf());
+
+const fmt = (d: Date) =>
+  d.toLocaleDateString('en-US', { year: 'numeric', month: 'long' });
 ---
 <SidebarLayout>
-  <section>
-    <p class="section-label mb-4">About</p>
+  <!-- About -->
+  <section id="about" class="mb-24 scroll-mt-20">
+    <h2 class="font-display font-extrabold text-4xl lg:text-5xl mb-6 tracking-tight">About</h2>
     <div class="space-y-5 text-[var(--color-text-secondary)] leading-relaxed">
       {profile.bio.map((paragraph) => (
         <p>{paragraph}</p>
       ))}
     </div>
+  </section>
+
+  <!-- Research -->
+  <section id="research" class="mb-24 scroll-mt-20">
+    <h2 class="font-display font-extrabold text-4xl lg:text-5xl mb-4 tracking-tight">Research</h2>
+    <p class="text-[var(--color-text-secondary)] text-sm leading-relaxed mb-10">
+      My work asks how partnership, reproduction, and marriage are being
+      decoupled in late-low-fertility Korea — and what this transition
+      means for gender, intimacy, and the structure of intergenerational ties.
+    </p>
+
+    <p class="section-label mb-2 mt-10">Peer-Reviewed</p>
+    <div>
+      {publicationsByType['peer-reviewed'].map((pub) => (
+        <PublicationCard publication={pub} />
+      ))}
+    </div>
+
+    <p class="section-label mb-2 mt-12">Research Reports</p>
+    <div>
+      {publicationsByType['report'].map((pub) => (
+        <PublicationCard publication={pub} />
+      ))}
+    </div>
+
+    <p class="section-label mb-2 mt-12">Works in Progress</p>
+    <div>
+      {publicationsByType['work-in-progress'].map((pub) => (
+        <PublicationCard publication={pub} />
+      ))}
+    </div>
+  </section>
+
+  <!-- Presentations -->
+  <section id="presentations" class="mb-24 scroll-mt-20">
+    <h2 class="font-display font-extrabold text-4xl lg:text-5xl mb-4 tracking-tight">Presentations</h2>
+    <p class="text-[var(--color-text-secondary)] text-sm leading-relaxed mb-10">
+      Invited talks, seminars, and conference presentations.
+    </p>
+
+    <p class="section-label mb-2 mt-10">Invited</p>
+    <div>
+      {presentationsByType['invited'].map((p) => (
+        <PresentationCard presentation={p} />
+      ))}
+    </div>
+
+    <p class="section-label mb-2 mt-12">Conference</p>
+    <div>
+      {presentationsByType['conference'].map((p) => (
+        <PresentationCard presentation={p} />
+      ))}
+    </div>
+  </section>
+
+  <!-- Blog -->
+  <section id="blog" class="mb-24 scroll-mt-20">
+    <h2 class="font-display font-extrabold text-4xl lg:text-5xl mb-4 tracking-tight">Blog</h2>
+    <p class="text-[var(--color-text-secondary)] text-sm leading-relaxed mb-10">
+      Notes on research, reading, and the academic life.
+    </p>
+
+    {posts.length === 0 ? (
+      <p class="text-[var(--color-text-muted)] italic">Posts coming soon.</p>
+    ) : (
+      <ul class="space-y-10">
+        {posts.map((post) => (
+          <li>
+            <a
+              href={`${baseUrl.replace(/\/$/, '')}/blog/${post.id}/`}
+              class="block group"
+            >
+              <p class="text-xs text-[var(--color-text-muted)] tracking-wide mb-2">
+                <time datetime={post.data.pubDate.toISOString()}>{fmt(post.data.pubDate)}</time>
+                {post.data.tags.length > 0 && (
+                  <span class="ml-2">· {post.data.tags[0]}</span>
+                )}
+              </p>
+              <h3 class="font-display font-extrabold text-xl leading-tight mb-2 group-hover:opacity-70 transition-opacity">
+                {post.data.title}
+              </h3>
+              <p class="text-sm text-[var(--color-text-secondary)] leading-relaxed">
+                {post.data.description}
+              </p>
+            </a>
+          </li>
+        ))}
+      </ul>
+    )}
+  </section>
+
+  <!-- CV -->
+  <section id="cv" class="scroll-mt-20">
+    <h2 class="font-display font-extrabold text-4xl lg:text-5xl mb-4 tracking-tight">Curriculum Vitae</h2>
+    <p class="text-[var(--color-text-secondary)] text-sm leading-relaxed mb-8">
+      A complete account of education, publications, presentations, awards,
+      and service is available as a downloadable PDF.
+    </p>
+    <a
+      href={cvUrl}
+      class="inline-flex items-center gap-3 px-6 py-3 border border-[var(--color-text)]
+             text-[var(--color-text)] hover:bg-[var(--color-text)] hover:text-[var(--color-bg)]
+             transition-colors duration-200 text-sm tracking-wide font-display font-extrabold"
+      target="_blank"
+      rel="noopener noreferrer"
+    >
+      <span>Download CV (PDF)</span>
+      <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M4 16v2a2 2 0 002 2h12a2 2 0 002-2v-2M7 10l5 5 5-5M12 15V3" />
+      </svg>
+    </a>
+    <p class="text-xs text-[var(--color-text-muted)] mt-6">
+      For inquiries or to request a more recent version, please email
+      <a
+        href={profile.links.email}
+        class="underline decoration-[var(--color-border-strong)] underline-offset-4 hover:text-[var(--color-text)]"
+      >
+        {profile.email}
+      </a>.
+    </p>
   </section>
 </SidebarLayout>
