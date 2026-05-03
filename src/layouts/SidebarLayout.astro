@@ -7,14 +7,20 @@ import Footer from '../components/Footer.astro';
 interface Props {
   title?: string;
   description?: string;
+  /**
+   * Hide the sidebar on mobile (collapses to nothing under lg).
+   * Used on individual detail pages so the reader lands directly on the
+   * content. Desktop layout is unchanged.
+   */
+  hideSidebarOnMobile?: boolean;
 }
 
-const { title, description } = Astro.props;
+const { title, description, hideSidebarOnMobile = false } = Astro.props;
 ---
 <BaseLayout title={title} description={description}>
   <Nav />
   <div class="pt-14 lg:flex lg:items-start">
-    <Sidebar />
+    <Sidebar hideOnMobile={hideSidebarOnMobile} />
     <main class="flex-1 min-w-0 px-8 lg:px-16 py-12 lg:py-16 max-w-4xl">
       <slot />
     </main>

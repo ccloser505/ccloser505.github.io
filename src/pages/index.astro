@@ -29,14 +29,9 @@ const fmt = (d: Date) =>
 
   <!-- Research -->
   <section id="research" class="mb-24 scroll-mt-20">
-    <h2 class="font-display font-extrabold text-4xl lg:text-5xl mb-4 tracking-tight">Research</h2>
-    <p class="text-[var(--color-text-secondary)] text-sm leading-relaxed mb-10">
-      My work asks how partnership, reproduction, and marriage are being
-      decoupled in late-low-fertility Korea — and what this transition
-      means for gender, intimacy, and the structure of intergenerational ties.
-    </p>
+    <h2 class="font-display font-extrabold text-4xl lg:text-5xl mb-8 tracking-tight">Research</h2>
 
-    <p class="section-label mb-2 mt-10">Peer-Reviewed</p>
+    <p class="section-label mb-2">Peer-Reviewed</p>
     <div>
       {publicationsByType['peer-reviewed'].map((pub) => (
         <PublicationCard publication={pub} />

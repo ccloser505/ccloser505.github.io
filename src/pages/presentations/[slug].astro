@@ -19,7 +19,7 @@ const doiHref = pres.doi
   : null;
 const pdfUrl = pres.pdf ? `${baseUrl}${pres.pdf}` : null;
 ---
-<SidebarLayout title={pres.title}>
+<SidebarLayout title={pres.title} hideSidebarOnMobile>
   <a
     href={backUrl}
     class="text-xs text-[var(--color-text-muted)] hover:text-[var(--color-text)] inline-block mb-8 tracking-wide"
