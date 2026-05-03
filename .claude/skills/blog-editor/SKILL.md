@@ -5,7 +5,7 @@ description: Project-specific rules for editing this Astro academic blog (Hwayeo
 
 # Blog Editing — Project Rules
 
-This is Hwayeon Kim's (김화연) personal academic site. It's a static-output Astro project deployed to GitHub Pages at `https://ccloser505.github.io`. The conventions below exist because this project has been carefully tuned — deviating without reason will either break the build, break the deployed paths, or undermine the design coherence.
+This is Hwayeon Kim's (김화연) personal academic site. It's a static-output Astro project deployed to GitHub Pages at `https://kim-hwayeon.github.io`. The conventions below exist because this project has been carefully tuned — deviating without reason will either break the build, break the deployed paths, or undermine the design coherence.
 
 Communicate with the user in **Korean** (그 사용자는 한국어 사용자임). Code, comments, and identifiers stay in English.
 
@@ -74,7 +74,7 @@ When adding a post:
 
 ## 4. Path & URL conventions
 
-The site is deployed at the root of `ccloser505.github.io` (GitHub user page), so `base: '/'`. **However**, code uses `import.meta.env.BASE_URL` everywhere — this is critical for two reasons:
+The site is deployed at the root of `kim-hwayeon.github.io` (GitHub user page), so `base: '/'`. **However**, code uses `import.meta.env.BASE_URL` everywhere — this is critical for two reasons:
 
 1. **Future-proofing**: If the site ever moves to a project page (`username.github.io/something`) or a custom domain with a base path, only `astro.config.mjs` needs to change. All links adapt automatically.
 2. **Consistency**: Mixing `/blog/` and `${baseUrl}blog/` would produce mysterious bugs only on certain deployments.
@@ -226,10 +226,10 @@ The migration is non-disruptive. Three changes:
 2. Create `public/CNAME` containing **only** the bare domain (no protocol, no slash). Astro copies it to `dist/CNAME` and GitHub Pages binds it.
 3. DNS at registrar:
    - Apex: 4 A records to `185.199.108.153`, `.109.153`, `.110.153`, `.111.153`
-   - `www`: CNAME → `ccloser505.github.io`
+   - `www`: CNAME → `kim-hwayeon.github.io`
 4. GitHub repo Settings → Pages → Custom domain → enter the domain, wait for DNS check, tick "Enforce HTTPS".
 
-GitHub will 301-redirect `ccloser505.github.io` to the new domain automatically — SEO is preserved.
+GitHub will 301-redirect `kim-hwayeon.github.io` to the new domain automatically — SEO is preserved.
 
 ---
 
@@ -276,10 +276,10 @@ git push                                       # auto-deploys
 gh run list --limit 5                          # recent workflows
 gh run watch                                   # live tail of in-progress run
 gh run view <id> --log-failed                  # debug failed deploy
-gh api repos/ccloser505/ccloser505.github.io/pages   # Pages config
+gh api repos/kim-hwayeon/kim-hwayeon.github.io/pages   # Pages config
 
 # Sanity checks
-/usr/bin/curl -s -o /dev/null -w "%{http_code}" https://ccloser505.github.io/   # is it live?
+/usr/bin/curl -s -o /dev/null -w "%{http_code}" https://kim-hwayeon.github.io/   # is it live?
 ```
 
 ---

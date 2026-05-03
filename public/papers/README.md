@@ -19,4 +19,4 @@ Naming convention: keep the filename close to the slug for clarity, e.g.
 `<slug>.pdf` or `<slug>-preprint.pdf`.
 
 Files in this folder are served as static assets at
-`https://ccloser505.github.io/papers/<filename>`.
+`https://kim-hwayeon.github.io/papers/<filename>`.

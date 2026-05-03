@@ -15,4 +15,4 @@ The download button appears automatically on the presentation card
 (homepage Presentations section) and on the presentation detail page
 (`/presentations/<slug>/`) only when `pdf` is set.
 
-Files here are served at `https://ccloser505.github.io/slides/<filename>`.
+Files here are served at `https://kim-hwayeon.github.io/slides/<filename>`.

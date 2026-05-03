@@ -9,8 +9,8 @@
 
 | 항목 | 값 |
 | --- | --- |
-| 사이트 URL | https://ccloser505.github.io |
-| GitHub 레포 | https://github.com/ccloser505/ccloser505.github.io |
+| 사이트 URL | https://kim-hwayeon.github.io |
+| GitHub 레포 | https://github.com/kim-hwayeon/kim-hwayeon.github.io |
 | 호스팅 | GitHub Pages (user page) |
 | 빌드/배포 | GitHub Actions (`.github/workflows/deploy.yml`) |
 | 배포 트리거 | `main` 브랜치 push |
@@ -131,11 +131,11 @@ npm run dev   # http://localhost:4321/ 에서 확인
        - `185.199.110.153`
        - `185.199.111.153`
    - `www` 서브도메인:
-     - CNAME → `ccloser505.github.io`
+     - CNAME → `kim-hwayeon.github.io`
 5. **GitHub 레포 Settings → Pages → Custom domain** 에 `hwayeon-kim.com` 입력
 6. DNS 전파 후 (보통 5분 ~ 1시간) **Enforce HTTPS** 체크
 7. `git push`로 변경사항 반영
-8. `https://ccloser505.github.io`는 새 도메인으로 자동 301 리다이렉트됨 (SEO 손실 X)
+8. `https://kim-hwayeon.github.io`는 새 도메인으로 자동 301 리다이렉트됨 (SEO 손실 X)
 
 ### 그 후 1회 작업 (Search Console)
 - 새 도메인을 Google Search Console에 추가
@@ -166,7 +166,7 @@ gh run view <id> --log-failed       # 실패한 빌드 로그 확인
 
 ### GitHub Pages 상태 확인
 ```bash
-gh api repos/ccloser505/ccloser505.github.io/pages
+gh api repos/kim-hwayeon/kim-hwayeon.github.io/pages
 ```
 
 ---

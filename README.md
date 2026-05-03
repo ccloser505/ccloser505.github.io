@@ -65,13 +65,13 @@ draft: false              # set true to hide
 
 ## Deployment to GitHub Pages
 
-The site is configured for `https://ccloser505.github.io` (a GitHub **user page**, served at the root).
+The site is configured for `https://kim-hwayeon.github.io` (a GitHub **user page**, served at the root).
 
 ### 1. Create the GitHub repository
 
-The repo name **must be exactly** `ccloser505.github.io` for user-page hosting:
+The repo name **must be exactly** `kim-hwayeon.github.io` for user-page hosting:
 
-1. On GitHub, create a new public repo named `ccloser505.github.io` (no README, no `.gitignore`, no license — leave empty).
+1. On GitHub, create a new public repo named `kim-hwayeon.github.io` (no README, no `.gitignore`, no license — leave empty).
 
 ### 2. Push the project
 
@@ -80,7 +80,7 @@ git init
 git add .
 git commit -m "Initial site"
 git branch -M main
-git remote add origin https://github.com/ccloser505/ccloser505.github.io.git
+git remote add origin https://github.com/kim-hwayeon/kim-hwayeon.github.io.git
 git push -u origin main
 ```
 
@@ -92,7 +92,7 @@ In the repo on GitHub: **Settings → Pages → Build and deployment → Source:
 
 The workflow at `.github/workflows/deploy.yml` runs on every push to `main`, builds the static site, and publishes it. After the **Actions** tab shows a green check, the site is live at:
 
-> **https://ccloser505.github.io**
+> **https://kim-hwayeon.github.io**
 
 ## Switching to a custom domain later
 
@@ -116,7 +116,7 @@ You can attach a custom domain (e.g. `hwayeon-kim.com`) without rebuilding or re
      - `185.199.109.153`
      - `185.199.110.153`
      - `185.199.111.153`
-   - **`www` subdomain** — one `CNAME` record → `ccloser505.github.io`
+   - **`www` subdomain** — one `CNAME` record → `kim-hwayeon.github.io`
 
 4. In the repo: **Settings → Pages → Custom domain** → enter `hwayeon-kim.com` → wait for the DNS check to pass → tick **Enforce HTTPS**.
 

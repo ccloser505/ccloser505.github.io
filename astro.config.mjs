@@ -5,10 +5,10 @@ import mdx from '@astrojs/mdx';
 import sitemap from '@astrojs/sitemap';
 
 // https://astro.build/config
-// Deploying to user page: https://ccloser505.github.io
-// (repo name must be exactly "ccloser505.github.io")
+// Deploying to user page: https://kim-hwayeon.github.io
+// (repo name must be exactly "kim-hwayeon.github.io")
 export default defineConfig({
-  site: 'https://ccloser505.github.io',
+  site: 'https://kim-hwayeon.github.io',
   base: '/',
   output: 'static',
   integrations: [mdx(), sitemap()],
