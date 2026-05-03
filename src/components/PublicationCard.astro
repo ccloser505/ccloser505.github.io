@@ -6,30 +6,75 @@ interface Props {
 }
 
 const { publication } = Astro.props;
+const baseUrl = import.meta.env.BASE_URL;
+const detailUrl = `${baseUrl.replace(/\/$/, '')}/research/${publication.slug}/`;
+const pdfUrl = publication.pdf ? `${baseUrl}${publication.pdf}` : null;
+const doiHref = publication.doi
+  ? publication.doi.startsWith('http')
+    ? publication.doi
+    : `https://doi.org/${publication.doi}`
+  : null;
 ---
-<article class="py-5 border-b border-[var(--color-border)] last:border-b-0">
-  <p class="text-xs text-[var(--color-text-muted)] mb-2 tracking-wide">
-    {publication.authors} · {publication.year}
-    {publication.language && (
-      <span> · in {publication.language}</span>
-    )}
-  </p>
+<article
+  class="group relative py-5 px-4 -mx-4 lg:px-6 lg:-mx-6 rounded-sm
+         border-b border-[var(--color-border)] last:border-b-0
+         hover:bg-[var(--color-bg-sidebar)] transition-colors duration-150"
+>
   <h3 class="font-display text-lg font-extrabold leading-snug mb-2">
-    {publication.url ? (
-      <a
-        href={publication.url}
-        class="hover:opacity-70 transition-opacity"
-        target="_blank"
-        rel="noopener noreferrer"
-      >
-        {publication.title}
-      </a>
-    ) : (
-      publication.title
-    )}
+    <a
+      href={detailUrl}
+      class="hover:text-[var(--color-accent)] transition-colors
+             before:absolute before:inset-0 before:content-['']"
+      aria-label={`Read more: ${publication.title}`}
+    >
+      {publication.title}
+    </a>
   </h3>
-  <p class="text-sm text-[var(--color-text-secondary)] italic">{publication.venue}</p>
+
+  <p class="text-sm text-[var(--color-text-secondary)] italic mb-2">
+    {publication.venue}
+  </p>
+
+  <p class="text-xs text-[var(--color-text-muted)] tracking-wide mb-3">
+    {publication.authors}
+    {publication.language && <span> · in {publication.language}</span>}
+    <span> · {publication.year}</span>
+  </p>
+
   {publication.note && (
-    <p class="text-xs text-[var(--color-text-muted)] mt-2">{publication.note}</p>
+    <p class="text-xs text-[var(--color-text-muted)] mb-3">{publication.note}</p>
+  )}
+
+  {(pdfUrl || doiHref) && (
+    <div class="relative flex items-center gap-2">
+      {pdfUrl && (
+        <a
+          href={pdfUrl}
+          class="inline-flex items-center gap-1.5 text-xs font-display font-extrabold tracking-wide
+                 text-[var(--color-text-secondary)] hover:text-[var(--color-accent)] transition-colors"
+          target="_blank"
+          rel="noopener noreferrer"
+          download
+          aria-label={`Download PDF: ${publication.title}`}
+        >
+          <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.8" d="M4 16v2a2 2 0 002 2h12a2 2 0 002-2v-2M7 10l5 5 5-5M12 15V3" />
+          </svg>
+          PDF
+        </a>
+      )}
+      {doiHref && (
+        <a
+          href={doiHref}
+          class="inline-flex items-center text-xs font-display font-extrabold tracking-wide
+                 text-[var(--color-text-secondary)] hover:text-[var(--color-accent)] transition-colors
+                 ml-2"
+          target="_blank"
+          rel="noopener noreferrer"
+        >
+          DOI
+        </a>
+      )}
+    </div>
   )}
 </article>

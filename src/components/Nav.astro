@@ -11,7 +11,7 @@ function resolve(href: string) {
 }
 ---
 <nav class="fixed top-0 left-0 right-0 z-50 bg-[var(--color-bg)]/90 backdrop-blur-sm border-b border-[var(--color-border)]">
-  <div class="px-6 lg:px-10 h-14 flex items-center gap-5 lg:gap-8 overflow-x-auto">
+  <div class="px-6 lg:px-10 h-14 flex items-center gap-8 lg:gap-14 overflow-x-auto">
     <a
       href={baseUrl}
       class="font-display font-extrabold text-base tracking-tight hover:text-[var(--color-accent)] transition-colors duration-200 whitespace-nowrap shrink-0"
@@ -42,35 +42,52 @@ function resolve(href: string) {
 </style>
 
 <script>
-  // Highlight the nav link whose section is currently in view.
-  // The rootMargin defines a narrow band (top 30% to bottom 40% of viewport)
-  // — a section becomes "active" only while inside that band, so only one
-  // link is highlighted at a time.
-  const sections = document.querySelectorAll<HTMLElement>('section[id]');
+  // Scroll-spy: highlight the nav link of the section the reader is on.
+  // Uses scroll position rather than IntersectionObserver so the bottom
+  // edge case (last section too short to enter the observer band) works:
+  // if we're scrolled to the bottom of the page, force the last section
+  // active regardless of its height.
+  const sections = Array.from(
+    document.querySelectorAll<HTMLElement>('section[id]')
+  );
   const links = document.querySelectorAll<HTMLAnchorElement>('[data-nav-anchor]');
 
-  if (sections.length > 0 && links.length > 0 && 'IntersectionObserver' in window) {
-    const setActive = (id: string | null) => {
+  if (sections.length > 0 && links.length > 0) {
+    const setActive = (id: string) => {
       links.forEach((link) => {
-        const anchor = link.dataset.navAnchor;
-        link.classList.toggle('is-active', anchor === `#${id}`);
+        link.classList.toggle('is-active', link.dataset.navAnchor === `#${id}`);
       });
     };
 
-    const observer = new IntersectionObserver(
-      (entries) => {
-        entries.forEach((entry) => {
-          if (entry.isIntersecting) {
-            setActive(entry.target.id);
-          }
-        });
-      },
-      {
-        rootMargin: '-30% 0px -60% 0px',
-        threshold: 0,
-      }
-    );
+    let ticking = false;
+    const updateActive = () => {
+      if (ticking) return;
+      ticking = true;
+      requestAnimationFrame(() => {
+        const scrolledToBottom =
+          window.innerHeight + window.scrollY >=
+          document.documentElement.scrollHeight - 4;
 
-    sections.forEach((s) => observer.observe(s));
+        if (scrolledToBottom) {
+          setActive(sections[sections.length - 1].id);
+        } else {
+          // Trigger line at 35% from the top of the viewport. Last section
+          // whose top has crossed this line wins.
+          const triggerY = window.scrollY + window.innerHeight * 0.35;
+          let activeId = sections[0].id;
+          for (const section of sections) {
+            if (section.offsetTop <= triggerY) {
+              activeId = section.id;
+            }
+          }
+          setActive(activeId);
+        }
+        ticking = false;
+      });
+    };
+
+    window.addEventListener('scroll', updateActive, { passive: true });
+    window.addEventListener('resize', updateActive, { passive: true });
+    updateActive();
   }
 </script>

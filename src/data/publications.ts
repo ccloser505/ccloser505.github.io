@@ -1,6 +1,7 @@
 export type PublicationType = 'peer-reviewed' | 'report' | 'work-in-progress';
 
 export interface Publication {
+  slug: string;
   title: string;
   authors: string;
   year: string;
@@ -8,12 +9,22 @@ export interface Publication {
   type: PublicationType;
   language?: 'English' | 'Korean';
   note?: string;
+  abstract?: string;
+  keywords?: string[];
+  doi?: string;
   url?: string;
+  /**
+   * Path (relative to public/) of a PDF stored in this repo.
+   * Example: 'papers/childcare-trends.pdf' → served at /papers/childcare-trends.pdf
+   * Leave undefined when no PDF is available; the download button hides automatically.
+   */
+  pdf?: string;
 }
 
 export const publications: Publication[] = [
   // ─── Peer-Reviewed ───
   {
+    slug: 'childcare-arrangement-trends',
     type: 'peer-reviewed',
     authors: 'Hwayeon Kim and Yool Choi',
     year: 'Forthcoming',
@@ -22,6 +33,7 @@ export const publications: Publication[] = [
     language: 'Korean',
   },
   {
+    slug: 'fdw-policy-discourse-analysis',
     type: 'peer-reviewed',
     authors: 'Hwayeon Kim and Nayoung Lee',
     year: '2024',
@@ -32,6 +44,7 @@ export const publications: Publication[] = [
 
   // ─── Research Reports ───
   {
+    slug: 'census-2025-data-utilization',
     type: 'report',
     authors: 'Bongoh Kye, Jong-Seok Byun, Sam-Hyun Yoo, Keun-Tae Kim, Yool Choi, and Hwayeon Kim',
     year: '2025',
@@ -40,6 +53,7 @@ export const publications: Publication[] = [
     language: 'Korean',
   },
   {
+    slug: 'young-women-researchers-condition',
     type: 'report',
     authors: 'Jeongin Kim, Jisu Kim, Hwayeon Kim, and Juhee Cheon',
     year: '2022',
@@ -50,6 +64,7 @@ export const publications: Publication[] = [
 
   // ─── Works in Progress ───
   {
+    slug: 'non-marital-childbearing-deficit-choice',
     type: 'work-in-progress',
     authors: 'Hwayeon Kim, Yool Choi, and Jiwon Lee',
     year: 'Under preparation',
@@ -57,6 +72,7 @@ export const publications: Publication[] = [
     venue: 'Abstract selected for the Journal of Comparative Family Studies special issue',
   },
   {
+    slug: 'decoupling-partnership-reproduction',
     type: 'work-in-progress',
     authors: 'Hwayeon Kim and Yool Choi',
     year: 'Under preparation',
@@ -64,6 +80,7 @@ export const publications: Publication[] = [
     venue: 'Working paper',
   },
   {
+    slug: 'elderly-parent-support-ties',
     type: 'work-in-progress',
     authors: 'Hwayeon Kim and Yool Choi',
     year: 'Under preparation',
@@ -76,4 +93,10 @@ export const publicationsByType = {
   'peer-reviewed': publications.filter((p) => p.type === 'peer-reviewed'),
   'report': publications.filter((p) => p.type === 'report'),
   'work-in-progress': publications.filter((p) => p.type === 'work-in-progress'),
+};
+
+export const publicationTypeLabel: Record<PublicationType, string> = {
+  'peer-reviewed': 'Peer-Reviewed',
+  'report': 'Research Report',
+  'work-in-progress': 'Work in Progress',
 };

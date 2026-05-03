@@ -1,0 +1,122 @@
+---
+import SidebarLayout from '../../layouts/SidebarLayout.astro';
+import { presentations, presentationTypeLabel } from '../../data/presentations';
+
+export async function getStaticPaths() {
+  return presentations.map((pres) => ({
+    params: { slug: pres.slug },
+    props: { pres },
+  }));
+}
+
+const { pres } = Astro.props;
+const baseUrl = import.meta.env.BASE_URL;
+const backUrl = `${baseUrl.replace(/\/$/, '')}/#presentations`;
+const doiHref = pres.doi
+  ? pres.doi.startsWith('http')
+    ? pres.doi
+    : `https://doi.org/${pres.doi}`
+  : null;
+const pdfUrl = pres.pdf ? `${baseUrl}${pres.pdf}` : null;
+---
+<SidebarLayout title={pres.title}>
+  <a
+    href={backUrl}
+    class="text-xs text-[var(--color-text-muted)] hover:text-[var(--color-text)] inline-block mb-8 tracking-wide"
+  >
+    ← Back to Presentations
+  </a>
+
+  <header class="mb-10 pb-8 border-b border-[var(--color-border)]">
+    <p class="section-label mb-3">
+      {presentationTypeLabel[pres.type]}
+      {pres.note && <span> · {pres.note}</span>}
+    </p>
+    <h1 class="font-display font-extrabold text-3xl lg:text-4xl tracking-tight leading-tight mb-5">
+      {pres.title}
+    </h1>
+    <p class="text-sm text-[var(--color-text-secondary)] leading-relaxed">
+      <span class="italic">{pres.event}</span>
+    </p>
+    <p class="text-sm text-[var(--color-text-muted)] mt-1">
+      {pres.location} · {pres.date}
+    </p>
+    {pdfUrl && (
+      <a
+        href={pdfUrl}
+        class="inline-flex items-center gap-2 mt-6 px-5 py-2.5 border border-[var(--color-text)]
+               text-[var(--color-text)] hover:bg-[var(--color-text)] hover:text-[var(--color-bg)]
+               transition-colors duration-200 text-sm font-display font-extrabold tracking-wide"
+        target="_blank"
+        rel="noopener noreferrer"
+        download
+      >
+        <span>Download Slides</span>
+        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.8" d="M4 16v2a2 2 0 002 2h12a2 2 0 002-2v-2M7 10l5 5 5-5M12 15V3" />
+        </svg>
+      </a>
+    )}
+  </header>
+
+  {pres.abstract ? (
+    <section class="mb-10">
+      <p class="section-label mb-3">Abstract</p>
+      <p class="text-[var(--color-text-secondary)] leading-relaxed whitespace-pre-line">
+        {pres.abstract}
+      </p>
+    </section>
+  ) : (
+    <section class="mb-10">
+      <p class="section-label mb-3">Abstract</p>
+      <p class="text-[var(--color-text-muted)] italic text-sm">
+        Abstract to be added.
+      </p>
+    </section>
+  )}
+
+  {pres.keywords && pres.keywords.length > 0 && (
+    <section class="mb-10">
+      <p class="section-label mb-3">Keywords</p>
+      <ul class="flex flex-wrap gap-2">
+        {pres.keywords.map((kw) => (
+          <li class="text-xs px-2.5 py-1 bg-[var(--color-bg-sidebar)] text-[var(--color-text-secondary)] rounded">
+            {kw}
+          </li>
+        ))}
+      </ul>
+    </section>
+  )}
+
+  {(doiHref || pres.url) && (
+    <section>
+      <p class="section-label mb-3">Links</p>
+      <ul class="text-sm space-y-2">
+        {doiHref && (
+          <li>
+            <a
+              href={doiHref}
+              class="text-[var(--color-text-secondary)] hover:text-[var(--color-accent)] underline decoration-[var(--color-border-strong)] underline-offset-4"
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              DOI: {pres.doi}
+            </a>
+          </li>
+        )}
+        {pres.url && (
+          <li>
+            <a
+              href={pres.url}
+              class="text-[var(--color-text-secondary)] hover:text-[var(--color-accent)] underline decoration-[var(--color-border-strong)] underline-offset-4 break-all"
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              {pres.url}
+            </a>
+          </li>
+        )}
+      </ul>
+    </section>
+  )}
+</SidebarLayout>
