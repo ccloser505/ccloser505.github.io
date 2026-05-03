@@ -6,16 +6,16 @@ const profileImageUrl = `${baseUrl}${profile.profileImage}`;
 const cvUrl = `${baseUrl}${profile.links.cv}`;
 ---
 <aside
-  class="lg:sticky lg:top-14 lg:self-start lg:w-[320px] lg:shrink-0
+  class="lg:sticky lg:top-14 lg:self-start lg:w-[400px] lg:shrink-0
          lg:border-r lg:border-[var(--color-border)]
-         px-8 lg:px-10 py-10 lg:py-14"
+         px-8 lg:px-12 py-10 lg:py-16"
 >
-  <div class="mb-8 max-w-[260px] mx-auto lg:mx-0">
+  <div class="mb-10 max-w-[340px] mx-auto lg:mx-0">
     <img
       src={profileImageUrl}
       alt={`Portrait illustration of ${profile.name.en}`}
       class="w-full h-auto block"
-      width="260"
+      width="340"
       loading="eager"
     />
   </div>
