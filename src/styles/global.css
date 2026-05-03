@@ -18,6 +18,8 @@
   --color-link: #1C1C1C;
   --color-link-hover: #000000;
 
+  --color-accent: #FF3B30;
+
   --font-display: "DM Sans", "Helvetica Neue", "Arial", sans-serif;
   --font-body: "Lato", "Helvetica Neue", "Arial", sans-serif;
   /* Keep --font-sans aliased to body so Tailwind's default font-sans utility works */
